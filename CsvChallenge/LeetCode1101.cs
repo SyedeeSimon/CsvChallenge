@@ -4,26 +4,10 @@ using CsvHelper;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using CsvChallenge.Models;
 
 namespace LeetCode
 {
-    public class TestData
-    {
-        public required int N { get; set; }
-        public required List<Logs> Logs { get; set; }
-    }
-
-    public class Logs
-    {
-        [Index(1)]
-        public int Person1 { get; set; }
-
-        [Index(2)]
-        public int Person2 { get; set; }
-
-        [Index(0)]
-        public int Timestamp { get; set; }
-    }
 
     public class Solution
     {
@@ -33,7 +17,7 @@ namespace LeetCode
             var testData = new TestData
             {
                 N = n,
-                Logs = logs.Select(log => new Logs
+                Logs = logs.Select(log => new Log
                 {
                     Timestamp = log[0],
                     Person1 = log[1],
@@ -63,7 +47,7 @@ namespace LeetCode
             }
             return -1;
         }
-        public void PrintLogs(List<Logs> logs)
+        public void PrintLogs(List<Log> logs)
         {
             Console.WriteLine("Logs:");
             foreach (var log in logs)
@@ -73,7 +57,7 @@ namespace LeetCode
         }
         
 
-        public int CountConnectedNodes(List<Logs> logs)
+        public int CountConnectedNodes(List<Log> logs)
         {
             // Determine the distinct nodes in the logs
             var nodes = new HashSet<int>();
@@ -128,7 +112,7 @@ namespace LeetCode
 
             var n = ValidateAndGetN(fileName);
             
-            var logsList = new List<Logs>();
+            var logsList = new List<Log>();
             var filePath = Path.Combine("Resources", "CsvFiles", fileName);
             var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -137,7 +121,7 @@ namespace LeetCode
             using (var reader = new StreamReader(filePath))
             using (var csv = new CsvReader(reader, config))
             {
-                logsList = csv.GetRecords<Logs>().ToList();
+                logsList = csv.GetRecords<Log>().ToList();
             }
             return new TestData
             {
