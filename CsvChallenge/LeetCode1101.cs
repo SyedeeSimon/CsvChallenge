@@ -1,8 +1,5 @@
 using CsvHelper;
-    using System.Globalization;
-    using CsvHelper.Configuration.Attributes;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using CsvChallenge.Models;
 
@@ -43,7 +40,7 @@ namespace LeetCode
                 var subList = testData.Logs.Take(i).ToList();
                 int connectedElements = CountConnectedNodes(subList);
                 if (connectedElements == testData.N) return testData.Logs[i - 1].Timestamp;
-             
+
             }
             return -1;
         }
@@ -52,10 +49,10 @@ namespace LeetCode
             Console.WriteLine("Logs:");
             foreach (var log in logs)
             {
-            Console.WriteLine($"Person1: {log.Person1}, Person2: {log.Person2}, Timestamp: {log.Timestamp}");
+                Console.WriteLine($"Person1: {log.Person1}, Person2: {log.Person2}, Timestamp: {log.Timestamp}");
             }
         }
-        
+
 
         public int CountConnectedNodes(List<Log> logs)
         {
@@ -63,21 +60,21 @@ namespace LeetCode
             var nodes = new HashSet<int>();
             foreach (var log in logs)
             {
-            nodes.Add(log.Person1);
-            nodes.Add(log.Person2);
+                nodes.Add(log.Person1);
+                nodes.Add(log.Person2);
             }
 
             // Create an adjacency list for the graph
             var graph = new Dictionary<int, List<int>>();
             foreach (var node in nodes)
             {
-            graph[node] = new List<int>();
+                graph[node] = new List<int>();
             }
 
             foreach (var log in logs)
             {
-            graph[log.Person1].Add(log.Person2);
-            graph[log.Person2].Add(log.Person1);
+                graph[log.Person1].Add(log.Person2);
+                graph[log.Person2].Add(log.Person1);
             }
 
             // Perform DFS from any one node
@@ -94,13 +91,13 @@ namespace LeetCode
 
             foreach (var neighbor in graph[node])
             {
-            if (!visited.Contains(neighbor))
-            {
-                DFS(neighbor, graph, visited);
-            }
+                if (!visited.Contains(neighbor))
+                {
+                    DFS(neighbor, graph, visited);
+                }
             }
         }
-        
+
         public TestData ReadTestFile(string[] args)
         {
             if (args.Length == 0)
@@ -111,7 +108,7 @@ namespace LeetCode
             var fileName = args[0];
 
             var n = ValidateAndGetN(fileName);
-            
+
             var logsList = new List<Log>();
             var filePath = Path.Combine("Resources", "CsvFiles", fileName);
             var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)

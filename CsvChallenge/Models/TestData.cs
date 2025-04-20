@@ -1,4 +1,5 @@
-namespace CsvChallenge.Models {
+namespace CsvChallenge.Models
+{
 
     public class TestData
     {

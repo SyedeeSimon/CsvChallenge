@@ -1,7 +1,8 @@
 using CsvHelper.Configuration.Attributes;
 
 
-namespace CsvChallenge.Models {
+namespace CsvChallenge.Models
+{
 
     public class Log
     {
