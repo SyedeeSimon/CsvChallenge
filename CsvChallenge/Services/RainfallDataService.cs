@@ -6,8 +6,8 @@ namespace FloodDetection.Services
 {
     public class RainfallDataService
     {
-        private const string DeviceDataFilePath = "Resources/Data/DeviceData/Devices.csv";
-        private const string RainfallReadingDataDirectory = "Resources/Data/RainfallReadingData";
+        private static readonly string DeviceDataFilePath = Path.Combine(AppContext.BaseDirectory, "Resources/Data/DeviceData/Devices.csv");
+        private static readonly string RainfallReadingDataDirectory = Path.Combine(AppContext.BaseDirectory, "Resources/Data/RainfallReadingData");
 
         public List<Device> LoadDevices()
         {
