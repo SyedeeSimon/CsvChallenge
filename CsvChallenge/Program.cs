@@ -1,63 +1,38 @@
-﻿using System.Globalization;
-using CsvHelper;
-using CsvHelper.Configuration.Attributes;
+using FloodDetection.Models;
+using FloodDetection.Services;
 
-namespace ReadWriteCsv
+namespace FloodDetection
 {
-
-    class Person
+    public class Program
     {
-        [Name("name")]
-        public string? Name { get; set; }
+        private static readonly RainfallDataService _rainfallDataService = new RainfallDataService();
+        private static readonly RainfallAnalysisService _rainfallAnalysisService = new RainfallAnalysisService();
 
-        [Name("age")]
-        public int Age { get; set; }
-
-        [Name("sex")]
-        public string? Sex { get; set; }
-
-        [Name("country")]
-        public string? Country { get; set; }
-    }
-
-    class ReaderWriter
-    {
-
-
-        static void main(string[] args)
+        public static void Main(string[] args)
         {
+            // Step 1: Load devices
+            var devices = _rainfallDataService.LoadDevices();
+            Console.WriteLine("Devices loaded successfully.");
 
-            var path = Path.Combine("Resources", "CsvFiles", "persons.csv");
+            // Step 2: Load rainfall data
+            var rainfallData = _rainfallDataService.LoadRainfallData();
+            Console.WriteLine("Rainfall data loaded successfully.");
 
-            using (var reader = new StreamReader(path))
-            using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
+            // Step 3: Get the latest time
+            var currentTime = RainfallAnalysisService.GetLatestTime(rainfallData);
+            Console.WriteLine($"Current time determined: {currentTime}");
+
+            // Step 4: Group rainfall data by device
+            var groupedData = _rainfallDataService.GroupRainfallDataByDevice(devices, rainfallData);
+            Console.WriteLine("Rainfall data grouped by device.");
+
+            // Step 5: Analyze rainfall data for each device
+            Console.WriteLine("\nRainfall Analysis Results:");
+            foreach (var deviceRainfallData in groupedData)
             {
-                var persons = csvReader.GetRecords<Person>().ToList();
-
-                foreach (string header in csvReader.HeaderRecord)
-                {
-                    Console.Write($"{header}, ");
-                }
-                Console.WriteLine();
-
-                foreach (Person person in persons)
-                {
-                    Console.WriteLine($"{person.Name}, {person.Age}, {person.Sex}, {person.Country}");
-                }
-
-                // Write to a new CSV file 
-                var newPath = Path.Combine("Resources", "CsvFiles", "new_persons.csv");
-                using (var writer = new StreamWriter(newPath))
-                using (var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture))
-                {
-                    csvWriter.WriteRecords(persons);
-                }
-
+                var analysisResult = _rainfallAnalysisService.GetRainfallAnalysisResult(deviceRainfallData, currentTime);
+                Console.WriteLine(analysisResult);
             }
-
-
         }
-
     }
-
 }
