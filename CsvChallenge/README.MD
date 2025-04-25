@@ -54,7 +54,7 @@ dotnet build
 dotnet run --project CsvChallenge/CsvChallenge.csproj
 ```
 ### Steps to run test
-1. Change directory to CsvChallenge/CsvChallenge.Tests
+1. Change current directory to CsvChallenge/CsvChallenge.Tests
 ```
 cd CsvChallenge.Tests
 ```
